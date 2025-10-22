@@ -2,7 +2,7 @@
   "name": "investment-manager-client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:7298",
+  "proxy": "http://localhost:5068",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
