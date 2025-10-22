@@ -1,0 +1,4 @@
+*.db
+*.log
+dotnet-install.sh
+dotnet-install.sh.1
