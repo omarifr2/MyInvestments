@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import InvestmentList from './components/InvestmentList';
 import AddInvestmentForm from './components/AddInvestmentForm';
 import CategoryList from './components/CategoryList';
 import AddCategoryForm from './components/AddCategoryForm';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [investments, setInvestments] = useState([]);
@@ -49,13 +51,32 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Investment Manager</h1>
-      <InvestmentList investments={investments} />
-      <AddInvestmentForm categories={categories} onInvestmentSubmit={handleInvestmentSubmit} />
-      <CategoryList categories={categories} />
-      <AddCategoryForm onCategorySubmit={handleCategorySubmit} />
-    </div>
+    <Router>
+      <div className="App">
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+          </ul>
+        </nav>
+        <h1>Investment Manager</h1>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <InvestmentList investments={investments} />
+              <AddInvestmentForm categories={categories} onInvestmentSubmit={handleInvestmentSubmit} />
+              <CategoryList categories={categories} />
+              <AddCategoryForm onCategorySubmit={handleCategorySubmit} />
+            </>
+          } />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
