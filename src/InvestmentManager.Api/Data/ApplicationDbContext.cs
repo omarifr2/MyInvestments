@@ -12,4 +12,14 @@ public class ApplicationDbContext : DbContext
     public DbSet<Investment> Investments { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<InvestmentTransaction> InvestmentTransactions { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Investment>()
+            .HasMany(i => i.Categories)
+            .WithMany(c => c.Investments)
+            .UsingEntity(j => j.ToTable("InvestmentCategory"));
+    }
 }

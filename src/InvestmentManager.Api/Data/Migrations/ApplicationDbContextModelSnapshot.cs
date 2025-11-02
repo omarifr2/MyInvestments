@@ -29,7 +29,7 @@ namespace InvestmentManager.Api.Data.Migrations
 
                     b.HasIndex("InvestmentsId");
 
-                    b.ToTable("CategoryInvestment");
+                    b.ToTable("InvestmentCategory", (string)null);
                 });
 
             modelBuilder.Entity("InvestmentManager.Api.Models.Category", b =>

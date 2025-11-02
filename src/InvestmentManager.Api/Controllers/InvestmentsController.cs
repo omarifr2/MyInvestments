@@ -1,4 +1,5 @@
 using InvestmentManager.Api.Data;
+using InvestmentManager.Api.Dtos;
 using InvestmentManager.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,30 +18,56 @@ public class InvestmentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Investment>>> GetInvestments()
+    public async Task<ActionResult<IEnumerable<InvestmentDto>>> GetInvestments()
     {
-        return await _context.Investments.Include(i => i.Categories).ToListAsync();
+        var investments = await _context.Investments
+            .Include(i => i.Categories)
+            .Select(i => new InvestmentDto
+            {
+                Id = i.Id,
+                Name = i.Name,
+                InitialValue = i.InitialValue,
+                CurrentValue = i.CurrentValue,
+                InvestmentDate = i.InvestmentDate,
+                Categories = i.Categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList()
+            })
+            .ToListAsync();
+
+        return Ok(investments);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Investment>> PostInvestment(Investment investment)
+    public async Task<ActionResult<InvestmentDto>> PostInvestment(CreateInvestmentDto createInvestmentDto)
     {
-        investment.CurrentValue = investment.InitialValue;
-
-        if (investment.Categories != null && investment.Categories.Any())
+        var investment = new Investment
         {
-            var categoryIds = investment.Categories.Select(c => c.Id).ToList();
-            var categoriesFromDb = await _context.Categories.Where(c => categoryIds.Contains(c.Id)).ToListAsync();
-            investment.Categories = categoriesFromDb;
+            Name = createInvestmentDto.Name,
+            InitialValue = createInvestmentDto.InitialValue,
+            InvestmentDate = createInvestmentDto.InvestmentDate,
+            CurrentValue = createInvestmentDto.InitialValue
+        };
+
+        if (createInvestmentDto.CategoryIds != null && createInvestmentDto.CategoryIds.Any())
+        {
+            var categories = await _context.Categories
+                .Where(c => createInvestmentDto.CategoryIds.Contains(c.Id))
+                .ToListAsync();
+            investment.Categories = categories;
         }
 
         _context.Investments.Add(investment);
         await _context.SaveChangesAsync();
 
-        var newInvestment = await _context.Investments
-            .Include(i => i.Categories)
-            .FirstOrDefaultAsync(i => i.Id == investment.Id);
+        var investmentDto = new InvestmentDto
+        {
+            Id = investment.Id,
+            Name = investment.Name,
+            InitialValue = investment.InitialValue,
+            CurrentValue = investment.CurrentValue,
+            InvestmentDate = investment.InvestmentDate,
+            Categories = investment.Categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList()
+        };
 
-        return CreatedAtAction(nameof(GetInvestments), new { id = newInvestment.Id }, newInvestment);
+        return CreatedAtAction(nameof(GetInvestments), new { id = investment.Id }, investmentDto);
     }
 }
