@@ -21,7 +21,6 @@ public class InvestmentsController : ControllerBase
     public async Task<ActionResult<IEnumerable<InvestmentDto>>> GetInvestments()
     {
         var investments = await _context.Investments
-            .Include(i => i.Categories)
             .Select(i => new InvestmentDto
             {
                 Id = i.Id,
