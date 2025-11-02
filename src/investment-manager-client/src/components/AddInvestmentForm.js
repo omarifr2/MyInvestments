@@ -4,11 +4,10 @@ const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
   const [newInvestmentName, setNewInvestmentName] = useState('');
   const [newInvestmentInitialValue, setNewInvestmentInitialValue] = useState('');
   const [newInvestmentDate, setNewInvestmentDate] = useState('');
-  const [newInvestmentCategories, setNewInvestmentCategories] = useState([]);
+  const [newInvestmentCategoryId, setNewInvestmentCategoryId] = useState('');
 
   const handleCategoryChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-    setNewInvestmentCategories(selectedOptions);
+    setNewInvestmentCategoryId(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -17,13 +16,13 @@ const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
       name: newInvestmentName,
       initialValue: parseFloat(newInvestmentInitialValue),
       investmentDate: newInvestmentDate,
-      categoryIds: newInvestmentCategories.map(id => parseInt(id))
+      categoryIds: [parseInt(newInvestmentCategoryId)]
     };
     onInvestmentSubmit(newInvestment);
     setNewInvestmentName('');
     setNewInvestmentInitialValue('');
     setNewInvestmentDate('');
-    setNewInvestmentCategories([]);
+    setNewInvestmentCategoryId('');
   };
 
   return (
@@ -48,7 +47,8 @@ const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
           onChange={(e) => setNewInvestmentDate(e.target.value)}
           placeholder="Investment Date"
         />
-        <select multiple onChange={handleCategoryChange}>
+        <select value={newInvestmentCategoryId} onChange={handleCategoryChange}>
+          <option value="">Select a category</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
