@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Investment> Investments { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<InvestmentTransaction> InvestmentTransactions { get; set; }
 }
