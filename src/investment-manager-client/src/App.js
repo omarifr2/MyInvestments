@@ -5,6 +5,8 @@ function App() {
   const [investments, setInvestments] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newInvestmentName, setNewInvestmentName] = useState('');
+  const [newInvestmentInitialValue, setNewInvestmentInitialValue] = useState('');
+  const [newInvestmentDate, setNewInvestmentDate] = useState('');
   const [newInvestmentCategories, setNewInvestmentCategories] = useState([]);
 
   useEffect(() => {
@@ -20,6 +22,8 @@ function App() {
     e.preventDefault();
     const newInvestment = {
       name: newInvestmentName,
+      initialValue: parseFloat(newInvestmentInitialValue),
+      investmentDate: newInvestmentDate,
       categories: newInvestmentCategories.map(id => categories.find(c => c.id === parseInt(id)))
     };
     fetch('/api/investments', {
@@ -31,8 +35,12 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        setInvestments([...investments, data]);
+        if (!investments.some(investment => investment.id === data.id)) {
+          setInvestments([...investments, data]);
+        }
         setNewInvestmentName('');
+        setNewInvestmentInitialValue('');
+        setNewInvestmentDate('');
         setNewInvestmentCategories([]);
       });
   };
@@ -49,7 +57,15 @@ function App() {
       <ul>
         {investments.map(investment => (
           <li key={investment.id}>
-            {investment.name} ({investment.categories.map(c => c.name).join(', ')})
+            <strong>{investment.name}</strong>
+            <br />
+            Categories: {investment.categories.map(c => c.name).join(', ')}
+            <br />
+            Initial Value: ${investment.initialValue}
+            <br />
+            Current Value: ${investment.currentValue}
+            <br />
+            Investment Date: {new Date(investment.investmentDate).toLocaleDateString()}
           </li>
         ))}
       </ul>
@@ -60,6 +76,18 @@ function App() {
           value={newInvestmentName}
           onChange={(e) => setNewInvestmentName(e.target.value)}
           placeholder="Investment Name"
+        />
+        <input
+          type="number"
+          value={newInvestmentInitialValue}
+          onChange={(e) => setNewInvestmentInitialValue(e.target.value)}
+          placeholder="Initial Value"
+        />
+        <input
+          type="date"
+          value={newInvestmentDate}
+          onChange={(e) => setNewInvestmentDate(e.target.value)}
+          placeholder="Investment Date"
         />
         <select multiple onChange={handleCategoryChange}>
           {categories.map(category => (
