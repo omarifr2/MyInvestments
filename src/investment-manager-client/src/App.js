@@ -6,6 +6,7 @@ import AddInvestmentForm from './components/AddInvestmentForm';
 import CategoryList from './components/CategoryList';
 import AddCategoryForm from './components/AddCategoryForm';
 import Dashboard from './components/Dashboard';
+import MonthlyInvestment from './components/MonthlyInvestment';
 
 function App() {
   const [investments, setInvestments] = useState([]);
@@ -61,6 +62,9 @@ function App() {
             <li>
               <Link to="/dashboard">Dashboard</Link>
             </li>
+            <li>
+              <Link to="/monthly-investment">Monthly Investment</Link>
+            </li>
           </ul>
         </nav>
         <h1>Investment Manager</h1>
@@ -74,6 +78,7 @@ function App() {
             </>
           } />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/monthly-investment" element={<MonthlyInvestment />} />
         </Routes>
       </div>
     </Router>
