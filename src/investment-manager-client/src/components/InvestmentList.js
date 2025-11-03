@@ -8,7 +8,7 @@ const InvestmentList = ({ investments }) => (
         <li key={investment.id}>
           <strong>{investment.name}</strong>
           <br />
-          Categories: {investment.categories.map(c => c.name).join(', ')}
+          Categories: {investment.categories ? investment.categories.map(c => c.name).join(', ') : 'None'}
           <br />
           Initial Value: ${investment.initialValue}
           <br />
