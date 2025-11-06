@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
+import { Dialog } from 'actify';
 import InvestmentList from './components/InvestmentList';
 import AddInvestmentForm from './components/AddInvestmentForm';
 import CategoryList from './components/CategoryList';
@@ -11,6 +12,8 @@ import MonthlyInvestment from './components/MonthlyInvestment';
 function App() {
   const [investments, setInvestments] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isAddInvestmentOpen, setIsAddInvestmentOpen] = useState(false);
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/investments')
@@ -56,6 +59,7 @@ function App() {
         if (!investments.some(investment => investment.id === data.id)) {
           setInvestments([...investments, data]);
         }
+        setIsAddInvestmentOpen(false);
       })
       .catch(error => {
         console.error('Error creating investment:', error);
@@ -79,6 +83,7 @@ function App() {
     })
     .then(data => {
       setCategories([...categories, data]);
+      setIsAddCategoryOpen(false);
     })
     .catch(error => {
       console.error('Error creating category:', error);
@@ -106,10 +111,14 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <InvestmentList investments={investments} />
-              <AddInvestmentForm categories={categories} onInvestmentSubmit={handleInvestmentSubmit} />
-              <CategoryList categories={categories} />
-              <AddCategoryForm onCategorySubmit={handleCategorySubmit} />
+              <InvestmentList investments={investments} onAddInvestment={() => setIsAddInvestmentOpen(true)} />
+              <Dialog open={isAddInvestmentOpen} onClose={() => setIsAddInvestmentOpen(false)}>
+                <AddInvestmentForm categories={categories} onInvestmentSubmit={handleInvestmentSubmit} />
+              </Dialog>
+              <CategoryList categories={categories} onAddCategory={() => setIsAddCategoryOpen(true)} />
+              <Dialog open={isAddCategoryOpen} onClose={() => setIsAddCategoryOpen(false)}>
+                <AddCategoryForm onCategorySubmit={handleCategorySubmit} />
+              </Dialog>
             </>
           } />
           <Route path="/dashboard" element={<Dashboard />} />

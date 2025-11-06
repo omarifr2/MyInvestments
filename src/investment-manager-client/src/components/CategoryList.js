@@ -1,14 +1,26 @@
 import React from 'react';
-import { Card, List, ListItem } from 'actify';
+import { Button, Card, Table, Thead, Tbody, Tr, Th, Td } from 'actify';
 
-const CategoryList = ({ categories }) => (
+const CategoryList = ({ categories, onAddCategory }) => (
   <Card>
-    <h2>Categories</h2>
-    <List>
-      {categories.map(category => (
-        <ListItem key={category.id}>{category.name}</ListItem>
-      ))}
-    </List>
+    <div className="flex justify-between items-center p-4">
+      <h2>Categories</h2>
+      <Button onClick={onAddCategory}>New Category</Button>
+    </div>
+    <Table>
+      <Thead>
+        <Tr>
+          <Th>Name</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {categories.map(category => (
+          <Tr key={category.id}>
+            <Td>{category.name}</Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   </Card>
 );
 
