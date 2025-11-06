@@ -1,4 +1,6 @@
 using InvestmentManager.Api.Data;
+using InvestmentManager.Api.Jobs;
+using InvestmentManager.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
+builder.Services.AddHostedService<ConfirmationJob>();
 
 var app = builder.Build();
 
