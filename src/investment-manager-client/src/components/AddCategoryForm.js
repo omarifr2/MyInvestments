@@ -20,7 +20,7 @@ const AddCategoryForm = ({ onCategorySubmit }) => {
         <TextField
           label="Category Name"
           value={newCategoryName}
-          onChange={(e) => setNewCategoryName(e.target.value)}
+          onChange={(e) => setNewCategoryName(e?.target?.value ?? e)}
         />
         <Button type="submit">Add Category</Button>
       </form>

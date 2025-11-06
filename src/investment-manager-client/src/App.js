@@ -14,11 +14,28 @@ function App() {
 
   useEffect(() => {
     fetch('/api/investments')
-      .then(response => response.json())
-      .then(data => setInvestments(data));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => setInvestments(data))
+      .catch(error => {
+        console.error('Error fetching investments:', error);
+      });
+    
     fetch('/api/categories')
-      .then(response => response.json())
-      .then(data => setCategories(data));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => setCategories(data))
+      .catch(error => {
+        console.error('Error fetching categories:', error);
+      });
   }, []);
 
   const handleInvestmentSubmit = (newInvestment) => {
@@ -29,11 +46,20 @@ function App() {
       },
       body: JSON.stringify(newInvestment),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
         if (!investments.some(investment => investment.id === data.id)) {
           setInvestments([...investments, data]);
         }
+      })
+      .catch(error => {
+        console.error('Error creating investment:', error);
+        alert('Failed to create investment. Please check the console for details.');
       });
   };
 
@@ -45,9 +71,18 @@ function App() {
       },
       body: JSON.stringify(newCategory),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
       setCategories([...categories, data]);
+    })
+    .catch(error => {
+      console.error('Error creating category:', error);
+      alert('Failed to create category. Please check the console for details.');
     });
   };
 

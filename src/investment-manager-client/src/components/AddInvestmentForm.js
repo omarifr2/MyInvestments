@@ -34,18 +34,18 @@ const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
         <TextField
           label="Investment Name"
           value={newInvestmentName}
-          onChange={(e) => setNewInvestmentName(e.target.value)}
+          onChange={(e) => setNewInvestmentName(e?.target?.value ?? e)}
         />
         <TextField
           label="Initial Value"
           type="number"
           value={newInvestmentInitialValue}
-          onChange={(e) => setNewInvestmentInitialValue(e.target.value)}
+          onChange={(e) => setNewInvestmentInitialValue(e?.target?.value ?? e)}
         />
         <TextField
           type="date"
           value={newInvestmentDate}
-          onChange={(e) => setNewInvestmentDate(e.target.value)}
+          onChange={(e) => setNewInvestmentDate(e?.target?.value ?? e)}
         />
         <select 
           multiple 

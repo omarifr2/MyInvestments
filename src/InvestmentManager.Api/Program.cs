@@ -14,9 +14,20 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
-builder.Services.AddHostedService<ConfirmationJob>();
+// Temporarily disabled: builder.Services.AddHostedService<ConfirmationJob>();
 
 var app = builder.Build();
 
@@ -24,17 +35,18 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-
-    // Seed the database
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        DataSeeder.Seed(context);
-    }
 }
 
-app.UseHttpsRedirection();
+// Use CORS
+app.UseCors("AllowReactApp");
+
+// Seed the database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    DataSeeder.Seed(context);
+}
 
 app.MapControllers();
 
