@@ -1,14 +1,15 @@
 import React from 'react';
+import { Card, List, ListItem } from 'actify';
 
 const CategoryList = ({ categories }) => (
-  <div>
+  <Card>
     <h2>Categories</h2>
-    <ul>
+    <List>
       {categories.map(category => (
-        <li key={category.id}>{category.name}</li>
+        <ListItem key={category.id}>{category.name}</ListItem>
       ))}
-    </ul>
-  </div>
+    </List>
+  </Card>
 );
 
 export default CategoryList;

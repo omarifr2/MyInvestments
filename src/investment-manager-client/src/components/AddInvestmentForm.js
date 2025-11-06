@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button, Select } from 'actify';
 
 const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
   const [newInvestmentName, setNewInvestmentName] = useState('');
@@ -29,33 +30,31 @@ const AddInvestmentForm = ({ categories, onInvestmentSubmit }) => {
   return (
     <div>
       <h2>Add New Investment</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <TextField
+          label="Investment Name"
           value={newInvestmentName}
           onChange={(e) => setNewInvestmentName(e.target.value)}
-          placeholder="Investment Name"
         />
-        <input
+        <TextField
+          label="Initial Value"
           type="number"
           value={newInvestmentInitialValue}
           onChange={(e) => setNewInvestmentInitialValue(e.target.value)}
-          placeholder="Initial Value"
         />
-        <input
+        <TextField
           type="date"
           value={newInvestmentDate}
           onChange={(e) => setNewInvestmentDate(e.target.value)}
-          placeholder="Investment Date"
         />
-        <select multiple onChange={handleCategoryChange}>
+        <Select multiple onChange={handleCategoryChange}>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
           ))}
-        </select>
-        <button type="submit">Add Investment</button>
+        </Select>
+        <Button type="submit">Add Investment</Button>
       </form>
     </div>
   );

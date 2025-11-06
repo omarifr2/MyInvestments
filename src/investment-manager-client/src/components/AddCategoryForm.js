@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button } from 'actify';
 
 const AddCategoryForm = ({ onCategorySubmit }) => {
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -15,14 +16,13 @@ const AddCategoryForm = ({ onCategorySubmit }) => {
   return (
     <div>
       <h2>Add New Category</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <TextField
+          label="Category Name"
           value={newCategoryName}
           onChange={(e) => setNewCategoryName(e.target.value)}
-          placeholder="Category Name"
         />
-        <button type="submit">Add Category</button>
+        <Button type="submit">Add Category</Button>
       </form>
     </div>
   );
