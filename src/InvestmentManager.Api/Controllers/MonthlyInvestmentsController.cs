@@ -1,4 +1,5 @@
 using InvestmentManager.Api.Data;
+using InvestmentManager.Api.Dtos;
 using InvestmentManager.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace InvestmentManager.Api.Controllers
         }
 
         [HttpGet("summary")]
-        public async Task<IActionResult> GetMonthlySummary(int year, int month)
+        public async Task<ActionResult<MonthlySummaryDto>> GetMonthlySummary(int year, int month)
         {
             var total = await _context.InvestmentTransactions
                 .Where(t => t.TransactionDate.Year == year && t.TransactionDate.Month == month)
@@ -39,7 +40,7 @@ namespace InvestmentManager.Api.Controllers
                 .Include(t => t.Investment)
                 .ThenInclude(i => i.Categories)
                 .GroupBy(t => t.Investment.Categories.FirstOrDefault() != null ? t.Investment.Categories.FirstOrDefault().Name : "Uncategorized")
-                .Select(g => new { Category = g.Key, Total = g.Sum(t => t.Amount) })
+                .Select(g => new CategorySummaryDto { Category = g.Key, Total = g.Sum(t => t.Amount) })
                 .ToListAsync();
 
             var previousMonthDate = new DateTime(year, month, 1).AddMonths(-1);
@@ -47,7 +48,14 @@ namespace InvestmentManager.Api.Controllers
                 .Where(t => t.TransactionDate.Year == previousMonthDate.Year && t.TransactionDate.Month == previousMonthDate.Month)
                 .SumAsync(t => t.Amount);
 
-            return Ok(new { Total = total, CategorySummary = categorySummary, PreviousMonthTotal = previousMonthTotal });
+            var summary = new MonthlySummaryDto
+            {
+                Total = total,
+                CategorySummary = categorySummary,
+                PreviousMonthTotal = previousMonthTotal
+            };
+
+            return Ok(summary);
         }
     }
 }
