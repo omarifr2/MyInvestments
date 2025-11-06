@@ -12,6 +12,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Investment> Investments { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<InvestmentTransaction> InvestmentTransactions { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Confirmation> Confirmations { get; set; }
     public DbSet<Report> Reports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
