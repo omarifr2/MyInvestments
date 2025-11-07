@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Table, Thead, Tbody, Tr, Th, Td } from 'actify';
+import { Button, Card, Table, TableHeader, TableBody, Row, Cell } from 'actify';
 
 const CategoryList = ({ categories, onAddCategory }) => (
   <Card>
@@ -8,18 +8,18 @@ const CategoryList = ({ categories, onAddCategory }) => (
       <Button onClick={onAddCategory}>New Category</Button>
     </div>
     <Table>
-      <Thead>
-        <Tr>
-          <Th>Name</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+      <TableHeader>
+        <Row>
+          <Cell>Name</Cell>
+        </Row>
+      </TableHeader>
+      <TableBody>
         {categories.map(category => (
-          <Tr key={category.id}>
-            <Td>{category.name}</Td>
-          </Tr>
+          <Row key={category.id}>
+            <Cell>{category.name}</Cell>
+          </Row>
         ))}
-      </Tbody>
+      </TableBody>
     </Table>
   </Card>
 );
