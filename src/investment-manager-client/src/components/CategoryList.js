@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Table, TableHeader, TableBody, Row, Cell } from 'actify';
+import { Button, Card, Table, TableHeader, TableBody, Row, Cell, Column } from 'actify';
 
 const CategoryList = ({ categories, onAddCategory }) => (
   <Card>
@@ -9,9 +9,7 @@ const CategoryList = ({ categories, onAddCategory }) => (
     </div>
     <Table>
       <TableHeader>
-        <Row>
-          <Cell>Name</Cell>
-        </Row>
+        <Column>Name</Column>
       </TableHeader>
       <TableBody>
         {categories.map(category => (

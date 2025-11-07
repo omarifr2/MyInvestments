@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Table, TableHeader, TableBody, Row, Cell } from 'actify';
+import { Button, Card, Table, TableHeader, TableBody, Row, Cell, Column } from 'actify';
 
 const InvestmentList = ({ investments, onAddInvestment }) => (
   <Card>
@@ -9,10 +9,8 @@ const InvestmentList = ({ investments, onAddInvestment }) => (
     </div>
     <Table>
       <TableHeader>
-        <Row>
-          <Cell>Name</Cell>
-          <Cell>Current Value</Cell>
-        </Row>
+        <Column>Name</Column>
+        <Column>Current Value</Column>
       </TableHeader>
       <TableBody>
         {investments.map(investment => (
