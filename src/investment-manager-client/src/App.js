@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import { Dialog } from 'actify';
-import InvestmentList from './components/InvestmentList';
-import AddInvestmentForm from './components/AddInvestmentForm';
-import CategoryList from './components/CategoryList';
-import AddCategoryForm from './components/AddCategoryForm';
 import Dashboard from './components/Dashboard';
 import MonthlyInvestment from './components/MonthlyInvestment';
+import Home from './components/Home';
 
 function App() {
   const [investments, setInvestments] = useState([]);
@@ -110,16 +107,16 @@ function App() {
         <h1>Investment Manager</h1>
         <Routes>
           <Route path="/" element={
-            <>
-              <InvestmentList investments={investments} onAddInvestment={() => setIsAddInvestmentOpen(true)} />
-              <Dialog open={isAddInvestmentOpen} onClose={() => setIsAddInvestmentOpen(false)}>
-                <AddInvestmentForm categories={categories} onInvestmentSubmit={handleInvestmentSubmit} />
-              </Dialog>
-              <CategoryList categories={categories} onAddCategory={() => setIsAddCategoryOpen(true)} />
-              <Dialog open={isAddCategoryOpen} onClose={() => setIsAddCategoryOpen(false)}>
-                <AddCategoryForm onCategorySubmit={handleCategorySubmit} />
-              </Dialog>
-            </>
+            <Home
+              investments={investments}
+              categories={categories}
+              isAddInvestmentOpen={isAddInvestmentOpen}
+              setIsAddInvestmentOpen={setIsAddInvestmentOpen}
+              isAddCategoryOpen={isAddCategoryOpen}
+              setIsAddCategoryOpen={setIsAddCategoryOpen}
+              handleInvestmentSubmit={handleInvestmentSubmit}
+              handleCategorySubmit={handleCategorySubmit}
+            />
           } />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/monthly-investment" element={<MonthlyInvestment />} />
